@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carsheet-Support · Carsheet</title>
+    <meta name="description" content="So importierst du deinen Tankverlauf aus einer anderen App, die gesetzlichen Prüftermine nach Land mit ihren Quellen und Antworten zu Verbrauch, Erinnerungen, Backups, dem Nachweis-PDF und der einmaligen Freischaltung.">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#EEF1F3" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101214" media="(prefers-color-scheme: dark)">
+    <link rel="canonical" href="https://starbuck-dev.github.io/Carsheet/de/support/">
+    <link rel="alternate" hreflang="en" href="https://starbuck-dev.github.io/Carsheet/support/">
+    <link rel="alternate" hreflang="de" href="https://starbuck-dev.github.io/Carsheet/de/support/">
+    <link rel="alternate" hreflang="fr" href="https://starbuck-dev.github.io/Carsheet/fr/support/">
+    <link rel="alternate" hreflang="es" href="https://starbuck-dev.github.io/Carsheet/es/support/">
+    <link rel="alternate" hreflang="it" href="https://starbuck-dev.github.io/Carsheet/it/support/">
+    <link rel="alternate" hreflang="pt-BR" href="https://starbuck-dev.github.io/Carsheet/pt-br/support/">
+    <link rel="alternate" hreflang="nl" href="https://starbuck-dev.github.io/Carsheet/nl/support/">
+    <link rel="alternate" hreflang="pl" href="https://starbuck-dev.github.io/Carsheet/pl/support/">
+    <link rel="alternate" hreflang="ru" href="https://starbuck-dev.github.io/Carsheet/ru/support/">
+    <link rel="alternate" hreflang="x-default" href="https://starbuck-dev.github.io/Carsheet/support/">
+    <link rel="icon" type="image/png" href="../../icon.png">
+    <link rel="apple-touch-icon" href="../../icon.png">
+    <style>
+:root {
+    color-scheme: light dark;
+    --bg: #EEF1F3; --card: #FFFFFF; --onbg: #F1F4F7; --ink: #15171A; --mute: #696E76; --line: #DADEE3;
+    --hue: #2F5D8A; --plate: #FFFFFF; --plate-ink: #15171A; --on-ink: #FFFFFF;
+    --shadow: 0 1px 2px rgba(21, 23, 26, 0.05), 0 8px 24px rgba(21, 23, 26, 0.06);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #101214; --card: #1B1E22; --onbg: #22262B; --ink: #EDEFF2; --mute: #A3A9B2; --line: #2B3036;
+        --hue: #6E9BC8; --on-ink: #101214; --shadow: none;
+    }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
+body {
+    margin: 0; background: var(--bg); color: var(--ink); font-size: 17px; line-height: 1.55;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+::selection { background: var(--hue); color: var(--card); }
+a { color: var(--hue); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--hue); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 20px; }
+.brand {
+    display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none;
+    font-weight: 800; font-size: 20px; letter-spacing: -0.01em;
+}
+.brand img { width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 0 0 1px var(--line); }
+.lang { position: relative; font-size: 15px; }
+.lang summary {
+    list-style: none; cursor: pointer; padding: 7px 14px; border-radius: 999px; white-space: nowrap;
+    background: var(--card); color: var(--ink); border: 1px solid var(--line); min-height: 36px;
+}
+.lang summary::-webkit-details-marker { display: none; }
+.lang summary { display: inline-flex; align-items: center; gap: 10px; }
+.lang summary::after, .list a::after, details.qa summary::after {
+    content: ""; flex: none; width: 7px; height: 7px; border: solid var(--mute); border-width: 0 1.75px 1.75px 0;
+}
+.lang summary::after { transform: translateY(-2px) rotate(45deg); }
+.lang[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.lang ul {
+    position: absolute; right: 0; z-index: 2; margin: 8px 0 0; padding: 6px; list-style: none; min-width: 200px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+}
+.lang li a { display: block; padding: 8px 12px; border-radius: 9px; color: var(--ink); text-decoration: none; }
+.lang li a:hover, .lang li a:focus-visible { background: var(--onbg); }
+.lang li a[aria-current="page"] { font-weight: 700; }
+main { padding-bottom: 8px; }
+.card {
+    background: var(--card); border-radius: 16px; padding: 24px; margin: 16px 0; box-shadow: var(--shadow);
+}
+.hero { position: relative; overflow: hidden; padding: 28px; margin-top: 24px; }
+.car { padding-left: 33px; }
+.car::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: var(--hue); }
+h1 { font-size: 34px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; margin: 0 0 12px; }
+h1 em { font-style: normal; color: var(--hue); }
+h2 { font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; font-weight: 750; margin: 0 0 8px; }
+h3 { font-size: 17px; line-height: 1.35; font-weight: 650; margin: 0 0 4px; }
+p { margin: 0 0 12px; }
+p:last-child { margin-bottom: 0; }
+.lead { font-size: 19px; line-height: 1.5; color: var(--mute); }
+.mute, .date { color: var(--mute); }
+.date { font-size: 15px; margin: 0 0 20px; }
+.summary { background: var(--onbg); border-radius: 12px; padding: 14px 16px; margin: 0 0 8px; }
+.button {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 12px;
+    background: var(--ink); color: var(--on-ink); font-weight: 650; text-decoration: none; margin-top: 12px;
+}
+.facts + .button { margin-top: 20px; }
+.legal section { padding-top: 22px; margin-top: 22px; border-top: 1px solid var(--line); }
+.legal section h2 { font-size: 19px; }
+.legal p, .legal li { color: var(--ink); }
+.legal p.date { color: var(--mute); }
+.list { padding: 4px 0; }
+.list a {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 20px;
+    text-decoration: none; color: var(--ink); min-height: 44px;
+}
+.list a + a { border-top: 1px solid var(--line); margin-left: 20px; padding-left: 0; }
+.list strong { font-weight: 650; display: block; color: var(--ink); }
+.list small { color: var(--mute); font-size: 15px; display: block; }
+.specimen { margin: 20px 0 4px; padding: 16px 18px 14px; border-radius: 12px; background: var(--onbg); }
+.specimen .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.specimen .what { font-weight: 650; }
+.specimen .when { text-align: right; margin-left: auto; }
+.specimen .when b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+.specimen .when small { color: var(--mute); font-size: 15px; }
+.specimen .bar { height: 4px; border-radius: 2px; background: var(--line); margin-top: 12px; overflow: hidden; }
+.specimen .bar i { display: block; height: 100%; width: 72%; background: var(--hue); border-radius: 2px; }
+.list a::after { transform: rotate(-45deg); margin-right: 4px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+.facts li {
+    font-size: 15px; font-weight: 600; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line);
+}
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
+.jump a {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px;
+    background: var(--onbg); color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px;
+}
+.block { margin: 40px 0 0; }
+.block > h2 { padding: 0 4px; }
+.block > p.mute { padding: 0 4px; }
+details.qa { border-top: 1px solid var(--line); }
+details.qa:first-child { border-top: 0; }
+details.qa summary {
+    cursor: pointer; list-style: none; padding: 16px 0; font-weight: 650; display: flex; gap: 12px;
+    justify-content: space-between; align-items: baseline;
+}
+details.qa summary::-webkit-details-marker { display: none; }
+details.qa summary::after { transform: translateY(-3px) rotate(45deg); margin-right: 4px; align-self: center; }
+details.qa[open] summary::after { transform: translateY(1px) rotate(-135deg); }
+@media (prefers-reduced-motion: no-preference) {
+    details.qa summary::after, .lang summary::after { transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+}
+details.qa .answer { padding: 0 0 16px; }
+.faq { padding-top: 8px; padding-bottom: 8px; }
+.guide { padding-top: 22px; margin-top: 22px; border-top: 1px solid var(--line); }
+.guide h3, .card > h3 { font-size: 19px; margin: 16px 0 10px; }
+.guide h3 { margin-top: 0; }
+.guide:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+ol.steps { margin: 0 0 12px; padding-left: 24px; }
+ol.steps li { margin: 0 0 6px; padding-left: 4px; }
+ol.steps li::marker { font-weight: 700; color: var(--mute); }
+.cols { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; padding: 0; list-style: none; }
+.cols code {
+    font: 500 14px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--onbg);
+    padding: 3px 8px; border-radius: 6px; display: inline-block;
+}
+.label { font-size: 15px; color: var(--mute); margin: 12px 0 0; }
+.plate {
+    display: inline-flex; align-items: center; justify-content: center; min-width: 38px; height: 24px;
+    padding: 0 6px; border: 1.5px solid var(--plate-ink); border-radius: 4px; background: var(--plate);
+    color: var(--plate-ink); font-weight: 800; font-size: 13px; letter-spacing: 0.08em; flex: none;
+}
+.checked { font-weight: 650; }
+table.dates { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 8px; }
+.dates th {
+    text-align: left; font-weight: 600; color: var(--mute); font-size: 13px; padding: 0 12px 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+.dates td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.dates tr:last-child td { border-bottom: 0; }
+.dates .country { white-space: nowrap; }
+.dates .country span { display: inline-flex; align-items: center; gap: 8px; }
+.dates .check { font-weight: 650; }
+.dates .source a { white-space: nowrap; }
+.dates .cadence { display: block; margin-top: 2px; }
+.dates .note { display: block; color: var(--mute); font-size: 13px; margin-top: 4px; }
+.dates .day { display: block; white-space: nowrap; color: var(--mute); }
+.dates .day::before { content: attr(data-label) " "; }
+.dates .check { display: block; }
+.disclaimer { font-size: 15px; color: var(--mute); }
+footer { padding: 24px 16px 48px; font-size: 15px; color: var(--mute); }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 8px; }
+footer a { color: var(--ink); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer p { margin: 0 0 6px; }
+mark.todo { background: #F5C400; color: #15171A; padding: 0 4px; border-radius: 4px; }
+@media (max-width: 600px) {
+    body { font-size: 16px; }
+    h1 { font-size: 28px; }
+    .card { padding: 20px; }
+    .card.list { padding: 4px 0; }
+    .hero { padding: 22px 20px; margin-top: 16px; }
+    .car { padding-left: 25px; }
+    .lead { font-size: 17px; }
+    .dates thead { display: none; }
+    .dates, .dates tbody, .dates tr, .dates td { display: block; width: 100%; }
+    .dates tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .dates tr:last-child { border-bottom: 0; }
+    .dates td { border: 0; padding: 2px 0; }
+    .dates .country { margin-bottom: 4px; }
+    .dates .source { margin-top: 6px; }
+    .dates .source a { white-space: normal; overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+}
+    </style>
+</head>
+<body>
+<header class="wrap top">
+    <a class="brand" href="../">
+        <picture>
+            <source srcset="../../icon-dark.png" media="(prefers-color-scheme: dark)">
+            <img src="../../icon.png" alt="" width="36" height="36">
+        </picture>
+        <span>Carsheet</span>
+    </a>
+    <details class="lang">
+        <summary aria-label="Sprache">Deutsch</summary>
+        <ul>
+            <li><a href="../../support/" hreflang="en" lang="en">English</a></li>
+            <li><a href="./" hreflang="de" lang="de" aria-current="page">Deutsch</a></li>
+            <li><a href="../../fr/support/" hreflang="fr" lang="fr">Français</a></li>
+            <li><a href="../../es/support/" hreflang="es" lang="es">Español</a></li>
+            <li><a href="../../it/support/" hreflang="it" lang="it">Italiano</a></li>
+            <li><a href="../../pt-br/support/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a></li>
+            <li><a href="../../nl/support/" hreflang="nl" lang="nl">Nederlands</a></li>
+            <li><a href="../../pl/support/" hreflang="pl" lang="pl">Polski</a></li>
+            <li><a href="../../ru/support/" hreflang="ru" lang="ru">Русский</a></li>
+        </ul>
+    </details>
+</header>
+<main class="wrap">
+<section class="card hero">
+<h1>Carsheet-Support</h1>
+<p class="lead">Verlauf importieren, gesetzliche Termine nachsehen, eine Antwort finden — oder uns schreiben.</p>
+<p>Schreib an <a href="mailto:ssx51f@gmail.com">ssx51f@gmail.com</a>; Sergei Stasenko antwortet meist innerhalb von zwei Werktagen. Über <strong>Support kontaktieren</strong> in den Einstellungen kommen App-Version, iOS-Version und Gerät gleich mit in die E-Mail.</p>
+<a class="button" href="mailto:ssx51f@gmail.com?subject=Carsheet-Support">E-Mail an den Support</a>
+<nav class="jump" aria-label="Auf dieser Seite"><a href="#import">Verlauf importieren</a><a href="#legal-dates">Gesetzliche Termine nach Land</a><a href="#questions">Fragen</a></nav>
+</section>
+<section class="block" id="import">
+<h2>Verlauf importieren</h2>
+<div class="card"><p>CSV aus Fuelly, Fuelio oder Spritmonitor importieren — oder jede andere CSV, sobald du ihre Spalten zuordnest. Importierte Tankvorgänge laufen durch dieselbe Volltank-Regel wie die, die du selbst einträgst, und Einträge, die das Auto schon hat, werden übersprungen — dieselbe Datei zweimal zu importieren fügt also nichts hinzu.</p>
+<h3>In Carsheet</h3>
+<ol class="steps"><li>Sichere die Datei aus deiner bisherigen App in Dateien oder schick sie dir per Mail oder AirDrop.</li><li>Öffne <strong>Einstellungen</strong> › <strong>Daten</strong> › <strong>CSV importieren</strong> und wähle die Datei mit <strong>Datei wählen…</strong> aus.</li><li>Prüfe die Vorschau: die Zahl der gefundenen Zeilen, die Einheiten, die Carsheet aus der Datei gelesen hat, und das Auto, zu dem die Zeilen kommen — eines deiner Autos unter <strong>Importieren in</strong> oder <strong>Neues Auto aus dieser Datei</strong>. Ändere die Einheiten, wenn die Zahlen falsch aussehen.</li><li>Tippe auf <strong>Importieren</strong>. Zeilen, die sich nicht lesen lassen, werden mit ihrer Zeilennummer aufgelistet, statt geraten zu werden.</li></ol>
+<p class="mute">Carsheets eigene CSV-Dateien (Einstellungen › Daten › CSV exportieren) kommen auf demselben Weg zurück, mit Wartungen und Kosten.</p></div>
+<div class="card">
+<div class="guide" id="import-fuelly">
+<h3>Aus Fuelly</h3>
+<ol class="steps"><li>Melde dich auf fuelly.com an und exportiere die Tankvorgänge deines Fahrzeugs als CSV-Datei (Fuelly exportiert nur Tankvorgänge; Wartungen bleiben zurück).</li><li>Importiere die Datei in Carsheet. Fuellys <code>price</code> ist der Preis pro Gallone oder Liter; steht in deiner Datei dort der bezahlte Gesamtbetrag, schalte in der Vorschau <strong>Preisspalte ist der Gesamtbetrag</strong> ein.</li><li>Bei einer Datei mit mehreren Fahrzeugen fragt Carsheet, welches importiert werden soll; die anderen importierst du nacheinander.</li></ol>
+<p class="mute">Teil- und ausgelassene Tankvorgänge behalten ihre Bedeutung: <code>partial_fuelup</code> wird zu Teilbetankung, <code>missed_fuelup</code> zu Nach Lücke. Die Einheiten folgen den Spaltennamen (<code>miles</code> oder <code>km</code>, <code>gallons</code> oder <code>litres</code>).</p>
+<p class="label">Spalten, die Carsheet liest</p>
+<ul class="cols"><li><code>car_name</code></li><li><code>odometer</code></li><li><code>miles</code></li><li><code>km</code></li><li><code>gallons</code></li><li><code>litres</code></li><li><code>price</code></li><li><code>fuelup_date</code></li><li><code>partial_fuelup</code></li><li><code>missed_fuelup</code></li><li><code>notes</code></li><li><code>brand</code></li></ul>
+</div>
+<div class="guide" id="import-fuelio">
+<h3>Aus Fuelio</h3>
+<ol class="steps"><li>Exportiere in Fuelio die Daten des Fahrzeugs über die Einstellungen für Backup und Export als CSV-Datei. Fuelio schreibt ein Fahrzeug pro Datei.</li><li>Importiere die Datei in Carsheet: Name des Fahrzeugs, seine Strecken- und Volumeneinheit und das Datumsformat kommen aus dem Fahrzeugabschnitt der Datei.</li><li>Fuelios Kosten kommen mit: Kosten, die nach Wartungsarbeit klingen (Service, Öl, Reifen, Bremsen, Inspektion), werden zu einer Wartung, alle anderen zu einer Ausgabe.</li></ol>
+<p class="mute"><code>Full</code> 1 ist ein voller Tank, alles andere eine Teilbetankung; <code>Missed</code> 1 heißt, dass ein Tankvorgang davor nicht eingetragen wurde (Nach Lücke). <code>Price</code> ist der bezahlte Gesamtbetrag, <code>VolumePrice</code> der Preis pro Liter oder Gallone.</p>
+<p class="label">Spalten, die Carsheet liest</p>
+<ul class="cols"><li><code>## Vehicle</code></li><li><code>## Log</code></li><li><code>Data</code></li><li><code>Odo (km)</code></li><li><code>Odo (mi)</code></li><li><code>Fuel</code></li><li><code>Full</code></li><li><code>Price</code></li><li><code>VolumePrice</code></li><li><code>City</code></li><li><code>Notes</code></li><li><code>Missed</code></li><li><code>## Costs</code></li></ul>
+</div>
+<div class="guide" id="import-spritmonitor">
+<h3>Aus Spritmonitor</h3>
+<ol class="steps"><li>Exportiere auf spritmonitor.de die Tankeinträge deines Fahrzeugs als CSV-Datei.</li><li>Importiere die Datei in Carsheet. Englische und deutsche Spaltennamen werden gelesen, das Dezimalkomma wird verstanden.</li><li>Enthält die Datei Fahrtstrecken statt Kilometerständen, gib in der Vorschau den <strong>Kilometerstand zu Beginn</strong> ein; Carsheet zählt die Strecken von dort aus zusammen.</li></ol>
+<p class="mute">Die Tankart behält ihre Bedeutung: voll, teilweise und die erste Betankung nach einer ausgelassenen (Nach Lücke). Eine leere Tankart ist ein voller Tank.</p>
+<p class="label">Spalten, die Carsheet liest</p>
+<ul class="cols"><li><code>Date</code></li><li><code>Odometer</code></li><li><code>Trip</code></li><li><code>Quantity</code></li><li><code>Total price</code></li><li><code>Currency</code></li><li><code>Type</code></li><li><code>Note</code></li><li><code>Datum</code></li><li><code>Kilometerstand</code></li><li><code>Strecke</code></li><li><code>Menge</code></li><li><code>Gesamtpreis</code></li><li><code>Währung</code></li><li><code>Betankung</code></li><li><code>Notiz</code></li></ul>
+</div>
+<div class="guide" id="import-manual">
+<h3>Aus jeder anderen CSV</h3>
+<ol class="steps"><li>Exportiere deine Tankvorgänge aus der anderen App oder Tabelle als CSV-Datei und wähle sie in Carsheet aus.</li><li>Carsheet zeigt unter <strong>Spalten zuordnen</strong> die ersten Zeilen der Datei. Wähle die Spalte für Datum, Kilometerstand (oder Fahrtstrecke), Menge und den Preis pro Einheit oder den Gesamtbetrag.</li><li>Markiert die Datei volle Tanks oder ausgelassene Tankvorgänge, wähle diese Spalten und den Wert, der „ja“ bedeutet. Ohne Volltank-Spalte zählt jeder Tankvorgang als voll.</li><li>Tippe auf <strong>Diese Spalten verwenden</strong> und prüfe die Vorschau wie bei jeder anderen Datei. Die nächste Datei mit denselben Spalten wird genauso zugeordnet.</li></ol>
+</div>
+</div>
+</section>
+<section class="block" id="legal-dates">
+<h2>Gesetzliche Termine nach Land</h2>
+<div class="card">
+<p class="checked">Gesetzliche Termine geprüft am 11. November 2026 · 2026-11</p>
+<p class="mute">Wenn du ein Auto hinzufügst, schlägt Carsheet die regelmäßigen gesetzlichen Termine seines Landes als Erinnerungen vor, und du bestätigst jeden einzeln. Das sind die Fristen, die Carsheet verwendet, mit dem Tag, an dem jede geprüft wurde, und der Seite, auf der sie nachgelesen wurde. Es sind Vorschläge, keine Rechtsberatung: Maßgeblich ist der Bescheid deiner Behörde.</p>
+<table class="dates">
+<thead><tr><th scope="col">Land</th><th scope="col">Prüfung und Frist</th><th scope="col">Quelle</th></tr></thead>
+<tbody>
+<tr data-preset="legal.au-rego"><td class="country"><span><b class="plate">AU</b> Australien</span></td><td><span class="check">Rego</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.service.nsw.gov.au/transaction/renew-a-vehicle-registration" rel="noopener">service.nsw.gov.au</a></td></tr>
+<tr data-preset="legal.br-licenciamento"><td class="country"><span><b class="plate">BR</b> Brasilien</span></td><td><span class="check">Licenciamento</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.gov.br/transportes/pt-br/assuntos/transito/senatran" rel="noopener">gov.br</a></td></tr>
+<tr data-preset="legal.de-hu"><td class="country"><span><b class="plate">DE</b> Deutschland</span></td><td><span class="check">HU (Hauptuntersuchung)</span><span class="cadence">Zuerst nach 3 Jahren, dann alle 2 Jahre</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.gesetze-im-internet.de/stvzo_2012/anlage_viii.html" rel="noopener">gesetze-im-internet.de</a></td></tr>
+<tr data-preset="legal.fr-ct"><td class="country"><span><b class="plate">FR</b> Frankreich</span></td><td><span class="check">Contrôle technique</span><span class="cadence">Zuerst nach 4 Jahren, dann alle 2 Jahre</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2878" rel="noopener">service-public.gouv.fr</a></td></tr>
+<tr data-preset="legal.ie-nct"><td class="country"><span><b class="plate">IE</b> Irland</span></td><td><span class="check">NCT</span><span class="cadence">Zuerst nach 4 Jahren, dann alle 2 Jahre, ab 10 Jahren jährlich</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://en.wikipedia.org/wiki/National_Car_Test" rel="noopener">en.wikipedia.org</a></td></tr>
+<tr data-preset="legal.it-revisione"><td class="country"><span><b class="plate">IT</b> Italien</span></td><td><span class="check">Revisione</span><span class="cadence">Zuerst nach 4 Jahren, dann alle 2 Jahre</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.mit.gov.it/revisione-periodica-veicoli" rel="noopener">mit.gov.it</a></td></tr>
+<tr data-preset="legal.ca-registration"><td class="country"><span><b class="plate">CA</b> Kanada</span></td><td><span class="check">Zulassung</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://en.wikipedia.org/wiki/Vehicle_registration_plates_of_Canada" rel="noopener">en.wikipedia.org</a></td></tr>
+<tr data-preset="legal.nz-wof"><td class="country"><span><b class="plate">NZ</b> Neuseeland</span></td><td><span class="check">Warrant of Fitness</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://en.wikipedia.org/wiki/Warrant_of_Fitness" rel="noopener">en.wikipedia.org</a></td></tr>
+<tr data-preset="legal.nl-apk"><td class="country"><span><b class="plate">NL</b> Niederlande</span></td><td><span class="check">APK</span><span class="cadence">Benzin: nach 4, 6 und 8 Jahren, dann jährlich. Diesel und LPG: nach 3 Jahren, dann jährlich</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://nl.wikipedia.org/wiki/Algemene_periodieke_keuring" rel="noopener">nl.wikipedia.org</a></td></tr>
+<tr data-preset="legal.at-pickerl"><td class="country"><span><b class="plate">AT</b> Österreich</span></td><td><span class="check">§57a-Begutachtung (Pickerl)</span><span class="cadence">Nach 3 und 5 Jahren, dann jährlich</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.oesterreich.gv.at/de/themen/mobilitaet/kfz/Seite.060500.html" rel="noopener">oesterreich.gv.at</a></td></tr>
+<tr data-preset="legal.pl-badanie"><td class="country"><span><b class="plate">PL</b> Polen</span></td><td><span class="check">Badanie techniczne</span><span class="cadence">Nach 3 und 5 Jahren, dann jährlich</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://rankomat.pl/samochod/badanie-techniczne-samochodu-co-musze-wiedziec" rel="noopener">rankomat.pl</a></td></tr>
+<tr data-preset="legal.ch-mfk"><td class="country"><span><b class="plate">CH</b> Schweiz</span></td><td><span class="check">MFK (Motorfahrzeugkontrolle)</span><span class="cadence">Nach 5 Jahren (spätestens nach 6), dann nach 8, danach alle 2 Jahre — dein Kanton schickt das Aufgebot</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-11">11. November 2026</time></span><a href="https://www.fedlex.admin.ch/eli/cc/1995/4425_4425_4425/de#art_33" rel="noopener">fedlex.admin.ch</a></td></tr>
+<tr data-preset="legal.es-itv"><td class="country"><span><b class="plate">ES</b> Spanien</span></td><td><span class="check">ITV</span><span class="cadence">Zuerst nach 4 Jahren, dann alle 2 Jahre, ab 10 Jahren jährlich</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://administracion.gob.es/tu-espacio-europeo/derechos-obligaciones/ciudadanos/vehiculos/itv" rel="noopener">administracion.gob.es</a></td></tr>
+<tr data-preset="legal.us-inspection"><td class="country"><span><b class="plate">US</b> Vereinigte Staaten</span></td><td><span class="check">Fahrzeugprüfung (Bundesstaat)</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://en.wikipedia.org/wiki/Vehicle_inspection_in_the_United_States" rel="noopener">en.wikipedia.org</a></td></tr>
+<tr data-preset="legal.us-registration"><td class="country"><span><b class="plate">US</b> Vereinigte Staaten</span></td><td><span class="check">Zulassung</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.usa.gov/state-motor-vehicle-services" rel="noopener">usa.gov</a></td></tr>
+<tr data-preset="legal.gb-tax"><td class="country"><span><b class="plate">GB</b> Vereinigtes Königreich</span></td><td><span class="check">Kfz-Steuer</span><span class="cadence">Jedes Jahr ab dem eingegebenen Datum</span><span class="note secondary">Rhythmus aus einer Sekundärquelle — prüfe ihn bei deiner Behörde</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.gov.uk/vehicle-tax" rel="noopener">gov.uk</a></td></tr>
+<tr data-preset="legal.gb-mot"><td class="country"><span><b class="plate">GB</b> Vereinigtes Königreich</span></td><td><span class="check">MOT</span><span class="cadence">Zuerst nach 3 Jahren, dann jährlich</span></td><td class="source"><span class="day" data-label="Geprüft"><time datetime="2026-11-10">10. November 2026</time></span><a href="https://www.gov.uk/getting-an-mot" rel="noopener">gov.uk</a></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="block" id="questions">
+<h2>Fragen</h2>
+<div class="card faq">
+<details class="qa"><summary>Wie wird der Verbrauch berechnet, und warum zeigt eine Teilbetankung keine Zahl?</summary>
+<div class="answer"><p>Der Verbrauch wird nur zwischen zwei vollen Tanks gemessen: der gesamte seit dem letzten vollen Tank getankte Kraftstoff, geteilt durch die seitdem gefahrene Strecke. Eine Teilbetankung zeigt keine eigene Zahl — ihr Kraftstoff und ihr Geld gehen in den nächsten vollen Tank ein, der den Verbrauch für die ganze Strecke zeigt. Dein Durchschnitt ist die Summe des Kraftstoffs über die Summe der Strecken, nie ein Mittel der Einzelwerte, das eine kurze Strecke so schwer gewichten würde wie eine lange.</p></div></details>
+<details class="qa"><summary>Was bedeutet „Nach Lücke“?</summary>
+<div class="answer"><p>Wähle <strong>Nach Lücke</strong>, wenn du vergessen hast, einen Tankvorgang vor diesem einzutragen. Carsheet kann nicht wissen, wie viel Kraftstoff in der Lücke getankt wurde, deshalb beginnt dieser Tankvorgang eine neue Kette, statt eine falsche Zahl zu zeigen; der nächste volle Tank danach zeigt wieder einen Verbrauch.</p></div></details>
+<details class="qa"><summary>mpg (US) oder mpg (UK)?</summary>
+<div class="answer"><p>Eine US-Gallone sind 3,785 Liter, eine imperiale Gallone 4,546 Liter, deshalb kommt dasselbe Auto in UK-Gallonen auf rund 20 % mehr mpg. Carsheet schreibt mpg immer mit US oder UK. Jedes Auto hat seine eigene Streckeneinheit, Volumeneinheit und Verbrauchsanzeige — im deutschsprachigen Raum ist l/100 km üblich, ein britisches Auto fährt typischerweise mit Meilen, Litern und mpg (UK) und Preisen in Pence pro Liter — und eine Änderung ändert nur die Anzeige der Zahlen: Der Verlauf selbst wird in Kilometern und Litern gespeichert.</p></div></details>
+<details class="qa"><summary>Wie funktionieren Erinnerungen, und was bedeutet „Unbekannt“?</summary>
+<div class="answer"><p>Eine Erinnerung kann eine Strecke und eine Zahl von Monaten haben, je nachdem, was zuerst eintritt: „Fällig in 1.900 km · oder bis 14. Feb. 2027“. Die maßgebliche Grenze steht in größerer Schrift. Um zu bestimmen, wann die Strecke erreicht ist, nimmt Carsheet, wie weit du in den letzten 90 Tagen gefahren bist. Gibt es in dieser Zeit weniger als zwei Kilometerstände oder seit 45 Tagen keinen, lässt sich die Strecke nicht vorhersagen: Die Erinnerung zeigt <strong>Unbekannt</strong> neben ihrem Datum und meldet sich nur nach Datum. <strong>Kilometerstand aktualisieren</strong> im Kopf des Autos behebt das. <strong>Als erledigt markieren</strong> trägt die Wartung ein und startet das Intervall neu.</p></div></details>
+<details class="qa"><summary>Warum ist eine Erinnerung nicht gekommen?</summary>
+<div class="answer"><p>Erinnerungen sind lokale Mitteilungen, die auf deinem Gerät geplant werden; nichts läuft über einen Server. Carsheet fragt nach der Erlaubnis, wenn du zum ersten Mal eine Erinnerung sicherst. Prüfe, ob Mitteilungen für Carsheet erlaubt sind (in Carsheet zeigt Einstellungen › Mitteilungen den Stand) und ob ein Fokus sie stummschaltet. Carsheet plant die nächsten Erinnerungen nach jedem Eintrag und bei jedem Öffnen neu, öffne die App also ab und zu.</p></div></details>
+<details class="qa"><summary>Wo sind meine Backups, und wie stelle ich eines wieder her?</summary>
+<div class="answer"><p>Carsheet legt jeden Tag ein automatisches Backup auf deinem Gerät an und behält die letzten zehn; <strong>Jetzt sichern</strong> unter Einstellungen › Daten › <strong>Backups</strong> legt ein eigenes an, das bleibt, bis du es löschst. Ein Backup lässt sich als Datei teilen. Zum Wiederherstellen wählst du eine Version oder <strong>Aus Datei wiederherstellen…</strong> und bestätigst: Deine Daten werden durch das Backup ersetzt, und eine Kopie des vorherigen Stands bleibt unter Backups erhalten. Backups enthalten deine Einträge; Belegfotos und PDFs bleiben in der App und im Backup deines Geräts.</p></div></details>
+<details class="qa"><summary>Wie bekomme ich meine Daten heraus?</summary>
+<div class="answer"><p><strong>CSV exportieren</strong> unter Einstellungen › Daten schreibt die Tankvorgänge, Wartungen und Kosten des Autos als CSV-Dateien für Numbers, Excel oder Google Sheets — jederzeit, mit oder ohne Freischaltung. Carsheet liest diese Dateien auch wieder ein.</p></div></details>
+<details class="qa"><summary>Was steht im Wartungsnachweis des Halters?</summary>
+<div class="answer"><p>Der Tab <strong>Nachweis</strong> zeigt ein PDF des Autos: die Tabelle der Wartungen mit Datum, Kilometerstand und ausgeführten Arbeiten, die gesetzlichen Termine, eine Tankübersicht und die Belege im Anschluss an die Tabelle. <strong>Preise zeigen</strong> blendet die Kostenspalte ein oder aus. Jede Seite trägt den Satz „Vom Halter geführter Nachweis. Einträge sind von keiner Werkstatt, keinem Hersteller und keiner Behörde geprüft. Belege beigefügt, soweit vorhanden.“ Das Papierformat ist A4, für Autos in den USA, Kanada und Mexiko US Letter.</p></div></details>
+<details class="qa"><summary>Was ist für ein Auto kostenlos, und was bringt die Freischaltung?</summary>
+<div class="answer"><p>Kostenlos für ein Auto, vollständig: Tankvorgänge, Wartungen, Ausgaben, Erinnerungen mit Mitteilungen, Belege und Papiere, Widgets, das Steuerelement, Kurzbefehle, Statistik, CSV-Import und -Export und die Vorschau des Nachweises. Die einmalige Freischaltung fügt den PDF-Export des Wartungsnachweises des Halters und ein zweites und weitere Autos hinzu. Sie ist ein einziger Kauf, kein Abo; den Preis zeigt dir der App Store vor dem Kauf in deiner Währung. Nichts, was du eingetragen hast, wird je gesperrt.</p></div></details>
+<details class="qa"><summary>Wie stelle ich meinen Kauf auf einem neuen iPhone oder iPad wieder her?</summary>
+<div class="answer"><p>Melde dich mit dem Apple Account an, mit dem du die Freischaltung gekauft hast, und tippe in den Einstellungen auf <strong>Käufe wiederherstellen</strong>. Der Kauf gehört zu deinem Apple Account und gilt daher auf jedem Gerät, das du damit nutzt.</p></div></details>
+<details class="qa"><summary>Welche Widgets, Steuerelemente und Kurzbefehle gibt es?</summary>
+<div class="answer"><p>Auf dem Home-Bildschirm: <strong>Als Nächstes fällig</strong> (was dein Auto als Nächstes braucht, nach Strecke oder Datum), <strong>Letzter Tank</strong> (der Verbrauch deines letzten Tanks im Vergleich zu deinem Durchschnitt) und <strong>Zwei Autos</strong> (was deine ersten zwei Autos jeweils als Nächstes brauchen); auf dem Sperrbildschirm die Zeile mit der nächsten Fälligkeit. Das Steuerelement <strong>Tankvorgang eintragen</strong> öffnet das Tankformular aus dem Kontrollzentrum oder vom Sperrbildschirm. In Kurzbefehlen und mit Siri: Tankvorgang eintragen, Kilometerstand aktualisieren und Was ist fällig.</p></div></details>
+<details class="qa"><summary>Welche Geräte und Sprachen werden unterstützt?</summary>
+<div class="answer"><p>Carsheet läuft auf iPhone und iPad mit iOS 18 oder neuer, auf Englisch, Deutsch, Französisch, Spanisch, Italienisch, brasilianischem Portugiesisch, Niederländisch, Polnisch und Russisch. Strecken, Mengen, Währung und Datum richten sich nach dem jeweiligen Auto und deiner Region. Die App funktioniert vollständig offline.</p></div></details>
+<details class="qa"><summary>Wie lösche ich meine Daten?</summary>
+<div class="answer"><p>Einzelne Einträge löschst du im Verlauf des Autos, ein Auto samt seinen Einträgen im Auto-Editor und Backup-Versionen unter Einstellungen › Daten › Backups. Archivieren nimmt ein Auto aus der Garage und behält seine Einträge. Wenn du die App löschst, werden alle ihre Daten von deinem Gerät entfernt. Wir haben keine Kopie, denn an uns wird nie etwas gesendet.</p></div></details>
+</div>
+<p class="disclaimer">Vom Halter geführter Nachweis. Einträge sind von keiner Werkstatt, keinem Hersteller und keiner Behörde geprüft. Belege beigefügt, soweit vorhanden.</p>
+</section>
+</main>
+<footer class="wrap">
+    <nav><a href="./">Support</a> <a href="../privacy/">Datenschutzerklärung</a> <a href="../terms/">Nutzungsbedingungen</a> <a href="mailto:ssx51f@gmail.com">ssx51f@gmail.com</a></nav>
+    <p>Carsheet ist mit keiner Zulassungs- oder Prüfbehörde, keiner Werkstatt und keinem Hersteller verbunden.</p>
+    <p>&copy; 2026 Sergei Stasenko. Alle Rechte vorbehalten.</p>
+</footer>
+</body>
+</html>
